@@ -8,9 +8,7 @@ class LogInContainer extends Component {
     event.preventDefault();
     const { email, password } = event.target.elements;
     try {
-      await app
-        .auth()
-        .signInWithEmailAndPassword(email.value, password.value);
+      await app.auth().signInWithEmailAndPassword(email.value, password.value);
       this.props.history.push("/");
     } catch (error) {
       alert(error);

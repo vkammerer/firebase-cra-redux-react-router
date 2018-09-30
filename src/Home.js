@@ -5,9 +5,7 @@ class Home extends Component {
   handleSignOut = async event => {
     event.preventDefault();
     try {
-      app
-        .auth()
-        .signOut();
+      app.auth().signOut();
     } catch (error) {
       alert(error);
     }
@@ -19,8 +17,8 @@ class Home extends Component {
         <h1>Home</h1>
         <div onClick={this.handleSignOut}>handleSignOut</div>
       </div>
-    )
+    );
   }
 }
 
-export default Home
+export default Home;

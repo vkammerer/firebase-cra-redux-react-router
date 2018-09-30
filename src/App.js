@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-
 import PrivateRoute from "./PrivateRoute";
 import Home from "./Home";
 import LogIn from "./LogIn";
@@ -8,30 +7,30 @@ import SignUp from "./SignUp";
 import app from "./base";
 
 class App extends Component {
-  state = { loading: true, authenticated: false, currentUser: null };
+  state = { currentUser: null, isAuthenticated: true, isLoading: false };
 
   componentWillMount() {
     app.auth().onAuthStateChanged(user => {
-      if (user) {
+      if (!!user) {
         this.setState({
-          authenticated: true,
           currentUser: user,
-          loading: false
+          isAuthenticated: true,
+          isLoading: false,
         });
       } else {
         this.setState({
-          authenticated: false,
           currentUser: null,
-          loading: false
+          isAuthenticated: false,
+          isLoading: false,
         });
       }
     });
   }
 
-  render(){
-    const { authenticated, loading } = this.state;
+  render() {
+    const { isAuthenticated, isLoading } = this.state;
 
-    if (loading) {
+    if (isLoading) {
       return <p>Loading..</p>;
     }
 
@@ -42,13 +41,13 @@ class App extends Component {
             exact
             path="/"
             component={Home}
-            authenticated={authenticated}
+            isAuthenticated={isAuthenticated}
           />
           <Route exact path="/login" component={LogIn} />
           <Route exact path="/signup" component={SignUp} />
         </div>
       </Router>
-    )
+    );
   }
 }
 
