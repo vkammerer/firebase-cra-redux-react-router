@@ -1,54 +1,23 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
-import Home from "./Home";
-import LogIn from "./LogIn";
-import SignUp from "./SignUp";
-import app from "./base";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import { listenToAuth } from "./actions/auth";
+import { listenToArticles } from "./actions/articles";
+import Routes from "./components/Routes";
 
-class App extends Component {
-  state = { currentUser: null, isAuthenticated: true, isLoading: false };
-
+export class App extends Component {
   componentWillMount() {
-    app.auth().onAuthStateChanged(user => {
-      if (!!user) {
-        this.setState({
-          currentUser: user,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-      } else {
-        this.setState({
-          currentUser: null,
-          isAuthenticated: false,
-          isLoading: false,
-        });
-      }
-    });
+    store.dispatch(listenToAuth());
+    store.dispatch(listenToArticles());
   }
-
   render() {
-    const { isAuthenticated, isLoading } = this.state;
-
-    if (isLoading) {
-      return <p>Loading..</p>;
-    }
-
     return (
-      <Router>
-        <div>
-          <PrivateRoute
-            exact
-            path="/"
-            component={Home}
-            isAuthenticated={isAuthenticated}
-          />
-          <Route exact path="/login" component={LogIn} />
-          <Route exact path="/signup" component={SignUp} />
-        </div>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Routes />
+        </Router>
+      </Provider>
     );
   }
 }
-
-export default App;
