@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { listenToAuth } from "./actions/auth";
 import { listenToArticles } from "./actions/articles";
-import Routes from "./components/Routes";
+import AuthRoutes from "./components/AuthRoutes";
 
 export class App extends Component {
   componentWillMount() {
@@ -15,7 +15,7 @@ export class App extends Component {
     return (
       <Provider store={store}>
         <Router>
-          <Routes />
+          <AuthRoutes />
         </Router>
       </Provider>
     );

@@ -5,19 +5,23 @@ import { Route } from "react-router-dom";
 import Page from "./Page";
 import Auth from "./Auth";
 
-class Routes extends Component {
-  componentDidMount() {
+class AuthRoutes extends Component {
+  constructor(props) {
+    super(props);
+    this.redirectWithAuthentication();
+  }
+  componentDidUpdate() {
+    this.redirectWithAuthentication();
+  }
+  redirectWithAuthentication = () => {
     if (this.props.location.pathname === "/login" && this.props.isAuthenticated)
       this.props.history.push("/");
-    if (this.props.location.pathname === "/" && !this.props.isAuthenticated)
+    if (
+      this.props.location.pathname !== "/login" &&
+      !this.props.isAuthenticated
+    )
       this.props.history.push("/login");
-  }
-  componentDidUpdate(prevProps) {
-    if (!prevProps.isAuthenticated && this.props.isAuthenticated)
-      this.props.history.push("/");
-    if (prevProps.isAuthenticated && !this.props.isAuthenticated)
-      this.props.history.push("/login");
-  }
+  };
   render() {
     return (
       <div>
@@ -32,4 +36,4 @@ const mapStateToProps = state => ({
   isAuthenticated: !!state.auth.uid,
 });
 
-export default withRouter(connect(mapStateToProps)(Routes));
+export default withRouter(connect(mapStateToProps)(AuthRoutes));
